@@ -52,9 +52,7 @@ def index(request: HttpRequest) -> HttpResponse:
         request (HttpRequest): Request received from the user.
     """
     template = 'blog/index.html'
-    context = {
-        'post_list': posts
-    }
+    context = {'post_list': posts}
     return render(request, template, context)
 
 
@@ -63,4 +61,12 @@ def post_detail(request: HttpRequest, id_: int) -> HttpResponse:
 
 
 def category_posts(request: HttpRequest, category_slug: str) -> HttpResponse:
-    return HttpResponse(f'<h1>Category: {category_slug}</h1>')
+    """Show list of posts in a category.
+
+    Args:
+        request (HttpRequest): Request received from the user.
+        category_slug (str): Category name.
+    """
+    template = 'blog/category_posts.html'
+    context = {'category': category_slug}
+    return render(request, template, context)
