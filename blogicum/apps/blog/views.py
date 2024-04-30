@@ -56,7 +56,7 @@ def index(request: HttpRequest) -> HttpResponse:
         request (HttpRequest): Request received from the user.
     """
     template = 'blog/index.html'
-    context = {'post_list': posts}
+    context = {'post_list': reversed(posts)}
     return render(request, template, context)
 
 
