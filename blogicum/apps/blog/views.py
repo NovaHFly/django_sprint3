@@ -67,7 +67,7 @@ def post_detail(request: HttpRequest, id_: int) -> HttpResponse:
         request (HttpRequest): Request received from the user.
         id_ (int): Post id.
     """
-    template = 'blog/post_detail.html'
+    template = 'blog/detail.html'
     context = {'post': POST_INDEX[id_]}
     return render(request, template, context)
 
@@ -79,6 +79,6 @@ def category_posts(request: HttpRequest, category_slug: str) -> HttpResponse:
         request (HttpRequest): Request received from the user.
         category_slug (str): Category name.
     """
-    template = 'blog/category_posts.html'
+    template = 'blog/category.html'
     context = {'category': category_slug}
     return render(request, template, context)
