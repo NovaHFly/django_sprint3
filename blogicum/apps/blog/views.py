@@ -50,7 +50,7 @@ POST_INDEX = {
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    """Show project main page to the user.
+    """Show project main page.
 
     Args:
         request (HttpRequest): Request received from the user.

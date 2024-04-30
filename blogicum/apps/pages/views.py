@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 
 def about(request: HttpRequest) -> HttpResponse:
-    """Show about page to the user.
+    """Show page with info about the project.
 
     Args:
         request (HttpRequest): Request received from the user.
@@ -13,7 +13,7 @@ def about(request: HttpRequest) -> HttpResponse:
 
 
 def rules(request: HttpRequest) -> HttpResponse:
-    """Show rules page to the user.
+    """Show page with rules.
 
     Args:
         request (HttpRequest): Request received from the user.
