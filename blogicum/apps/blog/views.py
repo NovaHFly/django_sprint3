@@ -1,5 +1,5 @@
-from django.http import HttpRequest
-from django.shortcuts import HttpResponse, render
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render
 
 posts = [
     {
@@ -46,7 +46,16 @@ posts = [
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    return HttpResponse('<h1>Main page</h1>')
+    """Show project main page to the user.
+
+    Args:
+        request (HttpRequest): Request received from the user.
+    """
+    template = 'blog/index.html'
+    context = {
+        'post_list': posts
+    }
+    return render(request, template, context)
 
 
 def post_detail(request: HttpRequest, id_: int) -> HttpResponse:
