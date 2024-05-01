@@ -1,4 +1,4 @@
-from django.http import HttpRequest, HttpResponse
+from django.http import Http404, HttpRequest, HttpResponse
 from django.shortcuts import render
 
 posts = [
@@ -44,9 +44,7 @@ posts = [
     },
 ]
 
-POST_INDEX = {
-    post['id']: post for post in posts
-}
+POST_INDEX = {post['id']: post for post in posts}
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -60,15 +58,19 @@ def index(request: HttpRequest) -> HttpResponse:
     return render(request, template, context)
 
 
-def post_detail(request: HttpRequest, id_: int) -> HttpResponse:
+def post_detail(request: HttpRequest, id: int) -> HttpResponse:  # noqa: A002
     """Show post content.
 
     Args:
         request (HttpRequest): Request received from the user.
-        id_ (int): Post id.
+        id (int): Post id.
     """
     template = 'blog/detail.html'
-    context = {'post': POST_INDEX[id_]}
+
+    if not (required_post := POST_INDEX.get(id)):
+        raise Http404(f'Post with id {id} does not exist!')
+
+    context = {'post': required_post}
     return render(request, template, context)
 
 
