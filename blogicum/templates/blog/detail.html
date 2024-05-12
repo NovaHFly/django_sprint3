@@ -5,9 +5,9 @@
     <article>
       <ul>
         <li>Место: {{ post.location }}</li>
-        <li>Дата: {{ post.date }}</li>
+        <li>Дата: {{ post.date|date:"d F, Y" }}</li>
         <li>
-          Категория: <a href="{% url 'blog:category_posts' post.category %}">{{ post.category }}</a>
+          Категория: <a href="{% url 'blog:category_posts' post.category.slug %}">{{ post.category.title }}</a>
         </li>
       </ul>
       <p>

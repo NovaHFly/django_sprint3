@@ -1,0 +1,12 @@
+<hr>
+<article>
+  <ul>
+    <li>Место: {{ post.location }}</li>
+    <li>Дата: {{ post.date|date:"d F, Y" }}</li>
+    <li>
+      Категория: <a href="{% url 'blog:category_posts' post.category.slug %}">{{ post.category.title }}</a>
+    </li>
+  </ul>
+  <p>{{ post.text|truncatewords:10 }}</p>
+  <a href="{% url 'blog:post_detail' post.id %}">Читать полный текст</a>
+</article>
