@@ -9,3 +9,12 @@ class PublishedModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+class DateCreatedModel(models.Model):
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name='Создано'
+    )
+
+    class Meta:
+        abstract = True
