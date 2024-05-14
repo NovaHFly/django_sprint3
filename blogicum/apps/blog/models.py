@@ -13,9 +13,9 @@ class Category(PublishedModel, DateCreatedModel):
     """Category of posts by the same theme.
 
     Attributes:
-        title (CharField[256]): name of the category.
-        slug (SlugField): slug of the category.
-        description (TextField): verbose description of the category.
+        title (CharField[256]): Name of the category.
+        slug (SlugField): Slug of the category.
+        description (TextField): Verbose description of the category.
     """
 
     title = models.CharField(
@@ -40,7 +40,7 @@ class Location(PublishedModel, DateCreatedModel):
     """Some landmark.
 
     Attributes:
-        name (CharField[256]): name of the landmark.
+        name (CharField[256]): Name of the landmark.
     """
 
     name = models.CharField(
@@ -57,6 +57,17 @@ class Location(PublishedModel, DateCreatedModel):
 
 
 class Post(PublishedModel, DateCreatedModel):
+    """A single post.
+
+    Attributes:
+        title (CharField[256]): Title of the post.
+        text (TextField): Text of the post.
+        pub_date (DateTimeField): Date and time when the post was published.
+        author (FK[User]): Author of the post.
+        location (FK[Location]): Location, connected to the post.
+        category (FK[Category]): Category of the post.
+    """
+
     title = models.CharField(
         max_length=256,
         verbose_name='Заголовок',
