@@ -1,5 +1,5 @@
-from django.http import Http404, HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404, render
 
 from blog.models import BlogPost, Category
 
@@ -10,7 +10,9 @@ def index(request: HttpRequest) -> HttpResponse:
     Args:
         request (HttpRequest): Request received from the user.
     """
-    posts = BlogPost.objects.filter(is_published=True)
+    posts = BlogPost.objects.filter(is_published=True).select_related(
+        'category'
+    )
     template = 'blog/index.html'
     context = {'post_list': reversed(posts)}
     return render(request, template, context)
@@ -25,10 +27,10 @@ def post_detail(request: HttpRequest, id: int) -> HttpResponse:  # noqa: A002
     """
     template = 'blog/detail.html'
 
-    try:
-        required_post = BlogPost.objects.get(pk=id)
-    except BlogPost.DoesNotExist:
-        raise Http404(f'Post with id {id} does not exist!')
+    required_post = get_object_or_404(
+        BlogPost.objects.all(),
+        pk=id
+    )
 
     context = {'post': required_post}
     return render(request, template, context)
@@ -43,6 +45,6 @@ def category_posts(request: HttpRequest, category_slug: str) -> HttpResponse:
     """
     template = 'blog/category.html'
     category = Category.objects.get(slug=category_slug)
-    posts = reversed(category.posts.all())
-    context = {'category': category.title, 'post_list': posts}
+    posts = category.posts.all()
+    context = {'category': category.title, 'post_list': reversed(posts)}
     return render(request, template, context)
