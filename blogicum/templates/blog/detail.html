@@ -1,20 +1,6 @@
 {% extends "base.html" %}
 {% block title %}{{ post.location }}. {{ post.date }}{% endblock %}
 {% block content %}
-  <!--Rework-->
-  <div class="container py-5">
-    <article>
-      <ul>
-        <li>Место: {{ post.location }}</li>
-        <li>Дата: {{ post.date|date:"d F, Y" }}</li>
-        <li>
-          Категория: <a href="{% url 'blog:category_posts' post.category.slug %}">{{ post.category.title }}</a>
-        </li>
-      </ul>
-      <p>{{ post.text|linebreaksbr }}</p>
-    </article>
-  </div>
-  <!---->
   <article>
     <p>
       {{ post.pub_date|date:"d E Y" }} |

@@ -10,11 +10,13 @@
              alt="Логотип">
         Блогикум
       </a>
+      {% with request.resolver_match.view_name as view_name %}
       <ul class="nav  nav-pills">
         {% include "includes/nav-item.html" with nav_url="blog:index" label="Лента записей" %}
         {% include "includes/nav-item.html" with nav_url="pages:about" label="О проекте" %}
         {% include "includes/nav-item.html" with nav_url="pages:rules" label="Наши правила" %}
       </ul>
+      {% endwith %}
     </div>
   </nav>
 </header>
