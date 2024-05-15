@@ -4,6 +4,11 @@ from django.contrib import admin
 import blog.models
 
 
+class PostInline(admin.StackedInline):
+    model = blog.models.Post
+    extra = 0
+
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = (
         'title',
@@ -12,6 +17,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display_links = ('title',)
     list_editable = ('is_published',)
     search_fields = ('title',)
+    inlines = (PostInline,)
 
 
 class LocationAdmin(admin.ModelAdmin):
@@ -22,6 +28,7 @@ class LocationAdmin(admin.ModelAdmin):
     list_display_links = ('name',)
     list_editable = ('is_published',)
     search_fields = ('name',)
+    inlines = (PostInline,)
 
 
 class PostAdmin(admin.ModelAdmin):
