@@ -1,30 +1,45 @@
 # Register your models here.
 from django.contrib import admin
 
-from blog.models import BlogPost, Category
-
-
-class BlogPostInline(admin.StackedInline):
-    model = BlogPost
-    extra = 0
+import blog.models
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    inlines = (BlogPostInline,)
-    list_display = ('title',)
+    list_display = (
+        'title',
+        'is_published',
+    )
+    list_display_links = ('title',)
+    list_editable = ('is_published',)
+    search_fields = ('title',)
 
 
-class BlogPostAdmin(admin.ModelAdmin):
-    list_display = ('is_published', 'date', 'location', 'category')
-    list_editable = ('is_published', 'category',)
-    search_fields = (
-        'text',
+class LocationAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'is_published',
+    )
+    list_display_links = ('name',)
+    list_editable = ('is_published',)
+    search_fields = ('name',)
+
+
+class PostAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'title',
+        'author',
+        'is_published',
+        'pub_date',
+        'category',
         'location',
     )
-    list_filter = ('category',)
-    list_display_links = ('date',)
-    empty_value_display = 'Не задано'
+    list_display_links = ('id', 'title')
+    list_editable = ('is_published', 'category', 'location')
+    list_filter = ('category', 'location')
+    search_fields = ('title', 'text')
 
 
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(BlogPost, BlogPostAdmin)
+admin.site.register(blog.models.Category, CategoryAdmin)
+admin.site.register(blog.models.Location, LocationAdmin)
+admin.site.register(blog.models.Post, PostAdmin)
