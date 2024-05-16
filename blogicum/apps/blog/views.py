@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 
-import blog.models
+from blog.models import Category, Post
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -13,7 +13,7 @@ def index(request: HttpRequest) -> HttpResponse:
     template = 'blog/index.html'
 
     posts = (
-        blog.models.Post.objects.published_posts().select_related(
+        Post.objects.published_posts().select_related(
             'location',
             'author',
         )
@@ -31,7 +31,7 @@ def post_detail(request: HttpRequest, id: int) -> HttpResponse:  # noqa: A002
     """
     template = 'blog/detail.html'
     required_post = get_object_or_404(
-        blog.models.Post.objects.published_posts().select_related(
+        Post.objects.published_posts().select_related(
             'location',
             'author',
         ),
@@ -51,7 +51,7 @@ def category_posts(request: HttpRequest, category_slug: str) -> HttpResponse:
     """
     template = 'blog/category.html'
     category = get_object_or_404(
-        blog.models.Category.objects.filter(is_published=True),
+        Category.objects.filter(is_published=True),
         slug=category_slug,
     )
     posts = (

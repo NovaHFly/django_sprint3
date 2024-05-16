@@ -1,11 +1,10 @@
-# Register your models here.
 from django.contrib import admin
 
-import blog.models
+from blog.models import Category, Location, Post
 
 
 class PostInline(admin.StackedInline):
-    model = blog.models.Post
+    model = Post
     extra = 0
 
 
@@ -47,6 +46,6 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ('title', 'text')
 
 
-admin.site.register(blog.models.Category, CategoryAdmin)
-admin.site.register(blog.models.Location, LocationAdmin)
-admin.site.register(blog.models.Post, PostAdmin)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(Location, LocationAdmin)
+admin.site.register(Post, PostAdmin)
