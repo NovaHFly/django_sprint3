@@ -10,13 +10,7 @@ User = get_user_model()
 
 
 class Category(PublishedModel, DateCreatedModel):
-    """Category of posts by the same theme.
-
-    Attributes:
-        title (CharField[256]): Name of the category.
-        slug (SlugField): Slug of the category.
-        description (TextField): Verbose description of the category.
-    """
+    """Category of posts by the same theme."""
 
     title = models.CharField(
         max_length=256,
@@ -25,8 +19,10 @@ class Category(PublishedModel, DateCreatedModel):
     slug = models.SlugField(
         verbose_name='Идентификатор',
         unique=True,
-        help_text='Идентификатор страницы для URL; разрешены'
-        ' символы латиницы, цифры, дефис и подчёркивание.',
+        help_text=(
+            'Идентификатор страницы для URL; разрешены'
+            ' символы латиницы, цифры, дефис и подчёркивание.'
+        ),
     )
     description = models.TextField(verbose_name='Описание')
 
@@ -39,11 +35,7 @@ class Category(PublishedModel, DateCreatedModel):
 
 
 class Location(PublishedModel, DateCreatedModel):
-    """Some landmark.
-
-    Attributes:
-        name (CharField[256]): Name of the landmark.
-    """
+    """Some landmark."""
 
     name = models.CharField(
         max_length=256,
@@ -59,16 +51,7 @@ class Location(PublishedModel, DateCreatedModel):
 
 
 class Post(PublishedModel, DateCreatedModel):
-    """A single post.
-
-    Attributes:
-        title (CharField[256]): Title of the post.
-        text (TextField): Text of the post.
-        pub_date (DateTimeField): Date and time when the post was published.
-        author (FK[User]): Author of the post.
-        location (FK[Location]): Location, connected to the post.
-        category (FK[Category]): Category of the post.
-    """
+    """A single post."""
 
     title = models.CharField(
         max_length=256,
@@ -79,8 +62,10 @@ class Post(PublishedModel, DateCreatedModel):
     )
     pub_date = models.DateTimeField(
         verbose_name='Дата и время публикации',
-        help_text='Если установить дату и время в будущем'
-        ' — можно делать отложенные публикации.'
+        help_text=(
+            'Если установить дату и время в будущем'
+            ' — можно делать отложенные публикации.'
+        ),
     )
 
     author = models.ForeignKey(
@@ -108,6 +93,7 @@ class Post(PublishedModel, DateCreatedModel):
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
+        ordering = ('-pub_date',)
 
     def __str__(self) -> str:
         return f'{self.pub_date} - {self.title}'
