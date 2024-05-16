@@ -12,12 +12,7 @@ def index(request: HttpRequest) -> HttpResponse:
     """
     template = 'blog/index.html'
 
-    posts = (
-        Post.objects.published_posts().select_related(
-            'location',
-            'author',
-        )
-    )[:5]
+    posts = Post.objects.select_all_related().get_published_posts()[:5]
     context = {'post_list': posts}
     return render(request, template, context)
 
@@ -31,10 +26,7 @@ def post_detail(request: HttpRequest, id: int) -> HttpResponse:  # noqa: A002
     """
     template = 'blog/detail.html'
     required_post = get_object_or_404(
-        Post.objects.published_posts().select_related(
-            'location',
-            'author',
-        ),
+        Post.objects.select_all_related().get_published_posts(),
         pk=id,
     )
 
@@ -54,11 +46,6 @@ def category_posts(request: HttpRequest, category_slug: str) -> HttpResponse:
         Category.objects.filter(is_published=True),
         slug=category_slug,
     )
-    posts = (
-        category.posts.published_posts().select_related(
-            'location',
-            'author',
-        )
-    )
+    posts = category.posts.select_all_related().get_published_posts()
     context = {'category': category.title, 'post_list': posts}
     return render(request, template, context)
