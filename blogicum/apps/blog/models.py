@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils import timezone
 
 from core.models import (
     DateCreatedModel,
@@ -7,6 +8,22 @@ from core.models import (
 )
 
 User = get_user_model()
+
+
+class PostManager(models.Manager):
+    def published_posts(self) -> models.QuerySet:
+        """Fetch posts which are published.
+
+        Published posts are not either:
+        1. Have is_published flag set to False.
+        2. Belong to category with is_published flag set to False.
+        3. Have pub_date greater than now.
+        """
+        return self.select_related('category').filter(
+            is_published=True,
+            category__is_published=True,
+            pub_date__lte=timezone.now(),
+        )
 
 
 class Category(PublishedModel, DateCreatedModel):
@@ -89,6 +106,8 @@ class Post(PublishedModel, DateCreatedModel):
         related_name='posts',
         verbose_name='Категория',
     )
+
+    published = PostManager()
 
     class Meta:
         verbose_name = 'публикация'
