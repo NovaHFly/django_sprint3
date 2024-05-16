@@ -107,13 +107,12 @@ class Post(PublishedModel, DateCreatedModel):
         verbose_name='Категория',
     )
 
-    manager = PostManager()
+    objects = PostManager()
 
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
         ordering = ('-pub_date',)
-        base_manager_name = 'manager'
 
     def __str__(self) -> str:
         return f'{self.pub_date} - {self.title}'

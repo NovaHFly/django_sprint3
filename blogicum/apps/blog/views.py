@@ -13,7 +13,7 @@ def index(request: HttpRequest) -> HttpResponse:
     template = 'blog/index.html'
 
     posts = (
-        blog.models.Post.manager.published_posts().select_related(
+        blog.models.Post.objects.published_posts().select_related(
             'location',
             'author',
         )
@@ -31,7 +31,7 @@ def post_detail(request: HttpRequest, id: int) -> HttpResponse:  # noqa: A002
     """
     template = 'blog/detail.html'
     required_post = get_object_or_404(
-        blog.models.Post.manager.published_posts().select_related(
+        blog.models.Post.objects.published_posts().select_related(
             'location',
             'author',
         ),
