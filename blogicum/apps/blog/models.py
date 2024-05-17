@@ -10,32 +10,8 @@ from core.models import (
 User = get_user_model()
 
 
-class PostManager(models.Manager):
-    """Custom manager for post model with select shortcuts."""
-
-    class CustomQuerySet(models.QuerySet):
-        """Custom query set for post model."""
-
-        def get_published_posts(self) -> models.QuerySet:
-            """Fetch posts which are published.
-
-            Published posts are not either:
-            1. Have is_published flag set to False.
-            2. Belong to category with is_published flag set to False.
-            3. Have pub_date greater than now.
-            """
-            return self.filter(
-                is_published=True,
-                category__is_published=True,
-                pub_date__lte=timezone.now(),
-            )
-
-        def select_all_related(self) -> models.QuerySet:
-            """Select all foreign keys for the posts."""
-            return self.select_related('author', 'category', 'location')
-
-    def get_queryset(self) -> CustomQuerySet:  # noqa D102
-        return self.CustomQuerySet(self.model, using=self._db)
+class PostQuerySet(models.QuerySet):
+    """Custom query set for post model."""
 
     def get_published_posts(self) -> models.QuerySet:
         """Fetch posts which are published.
@@ -45,11 +21,15 @@ class PostManager(models.Manager):
         2. Belong to category with is_published flag set to False.
         3. Have pub_date greater than now.
         """
-        return self.get_queryset().get_published_posts()
+        return self.filter(
+            is_published=True,
+            category__is_published=True,
+            pub_date__lte=timezone.now(),
+        )
 
     def select_all_related(self) -> models.QuerySet:
         """Select all foreign keys for the posts."""
-        return self.get_queryset().select_all_related()
+        return self.select_related('author', 'category', 'location')
 
 
 class Category(PublishedModel, DateCreatedModel):
@@ -133,7 +113,7 @@ class Post(PublishedModel, DateCreatedModel):
         verbose_name='Категория',
     )
 
-    objects = PostManager()
+    objects = PostQuerySet.as_manager()
 
     class Meta:
         verbose_name = 'публикация'
